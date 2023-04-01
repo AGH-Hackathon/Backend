@@ -1,4 +1,5 @@
 rootProject.name = 'backend'
 include 'lobby-creator-service'
 include 'common'
+include 'game-management'
 
