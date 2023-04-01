@@ -13,7 +13,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LabelImagePair {
+public class Solution {
     @Id
     private UUID id;
     @OneToOne

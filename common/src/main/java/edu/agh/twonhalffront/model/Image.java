@@ -13,5 +13,5 @@ import java.util.UUID;
 public class Image {
     @Id
     private UUID uuid;
-    private byte[] image;
+    private String path;
 }

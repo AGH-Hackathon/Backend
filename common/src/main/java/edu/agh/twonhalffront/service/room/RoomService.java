@@ -17,4 +17,8 @@ public class RoomService {
         this.roundRepository = roundRepository;
         this.gameConfigurationRepository = gameConfigurationRepository;
     }
+
+    public void createRoom() {
+
+    }
 }

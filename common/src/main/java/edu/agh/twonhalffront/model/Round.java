@@ -22,5 +22,5 @@ public class Round {
             mappedBy = "round",
             cascade = CascadeType.ALL
     )
-    private List<LabelImagePair> labelImagePairs;
+    private List<Solution> solutions;
 }
