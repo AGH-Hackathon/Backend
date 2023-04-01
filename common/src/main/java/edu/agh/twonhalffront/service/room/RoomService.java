@@ -1,7 +1,10 @@
 package edu.agh.twonhalffront.service.room;
 
+import edu.agh.twonhalffront.model.GameConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 public class RoomService {
@@ -20,5 +23,15 @@ public class RoomService {
 
     public void createRoom() {
 
+    }
+
+    public GameConfigurationDto getGameConfiguration(UUID roomId) {
+        GameConfiguration gameConfiguration = roomRepository.findById(roomId).get().getGameConfiguration();
+        return new GameConfigurationDto(
+                gameConfiguration.getId(),
+                gameConfiguration.getImageAmount(),
+                gameConfiguration.getRoundAmount(),
+                gameConfiguration.getRoom()
+        );
     }
 }
