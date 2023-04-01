@@ -12,7 +12,9 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Round {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
     @ManyToOne(
             cascade = {CascadeType.REMOVE, CascadeType.PERSIST}
     )
