@@ -18,6 +18,9 @@ public class Round {
     )
     private Room room;
 
-    @ElementCollection
+    @OneToMany(
+            mappedBy = "round",
+            cascade = CascadeType.ALL
+    )
     private List<LabelImagePair> labelImagePairs;
 }

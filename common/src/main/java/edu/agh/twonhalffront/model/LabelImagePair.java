@@ -1,16 +1,27 @@
 package edu.agh.twonhalffront.model;
 
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@Embeddable
-@NoArgsConstructor
-public class LabelImagePair {
+import java.util.UUID;
 
-    private String id;
+@Data
+@Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class LabelImagePair {
+    @Id
+    private UUID id;
+    @OneToOne
     private Description description;
+    @OneToOne
     private Image image;
+    @ManyToOne(
+            cascade = {CascadeType.REMOVE, CascadeType.PERSIST}
+    )
+    private Round round;
 }
