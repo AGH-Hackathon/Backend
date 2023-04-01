@@ -1,11 +1,12 @@
 package edu.agh.twonhalffront.model;
 
+import jakarta.persistence.Embeddable;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@Builder
-@Embedable
+@Embeddable
 @NoArgsConstructor
 public class LabelImagePair {
 
