@@ -41,3 +41,7 @@ ai/images
 ai/.idea
 ai/pretrained
 ai/venv
+
+### H2 Database files ###
+database.mv.db
+database.trace.db
