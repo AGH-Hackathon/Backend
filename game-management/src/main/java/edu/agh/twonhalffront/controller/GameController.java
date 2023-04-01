@@ -21,18 +21,21 @@ public class GameController {
     private final GameService gameService;
 
     @PostMapping("/{roomId}/start")
-    public ResponseEntity<Void> startGame(@PathVariable String roomId) {
-
-//        start game
+    public ResponseEntity<Void> startGame(@PathVariable UUID roomId) {
+        gameService.deleteMe(roomId);
+//        gameService.addGameThread(roomId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
-    @PostMapping("/{roundId}/{userId}")
-    public ResponseEntity<Score> receiveUserAnswers(@PathVariable UUID roundId, @PathVariable UUID userId, @RequestBody UserAnswer userAnswer) {
+    @PostMapping("/{roomId}/{roundId}/{userId}")
+    public ResponseEntity<Score> receiveUserAnswers(@PathVariable UUID roomId,
+                                                    @PathVariable UUID roundId,
+                                                    @PathVariable UUID userId,
+                                                    @RequestBody UserAnswer userAnswer) {
 
-        Score score = gameService.processUserAnswers(roundId, userId, userAnswer);
+        Score score = gameService.processUserAnswers(roomId, roundId, userId, userAnswer);
 
         return new ResponseEntity<>(score, HttpStatus.OK);
     }
