@@ -1,0 +1,9 @@
+application {
+    mainClass = 'edu.agh.twonhalffront.LobbyCreatorApplication'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': application.mainClass
+    }
+}
