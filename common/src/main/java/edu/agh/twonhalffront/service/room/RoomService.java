@@ -1,6 +1,7 @@
 package edu.agh.twonhalffront.service.room;
 
 import edu.agh.twonhalffront.model.GameConfiguration;
+import edu.agh.twonhalffront.model.Room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
