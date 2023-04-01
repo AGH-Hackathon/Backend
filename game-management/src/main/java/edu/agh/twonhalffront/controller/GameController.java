@@ -1,41 +1,44 @@
 package edu.agh.twonhalffront.controller;
 
+import edu.agh.twonhalffront.dto.Score;
+import edu.agh.twonhalffront.dto.UserAnswer;
+import edu.agh.twonhalffront.game.GameEngine;
+import edu.agh.twonhalffront.service.GameService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/game")
 @RequiredArgsConstructor
 public class GameController {
 
-//    @Autowired
-//    SimpMessagingTemplate template;
-//
-//    @PostMapping("/send")
-//    public ResponseEntity<Void> sendMessage(@RequestBody TextMessageDTO textMessageDTO) {
-//        template.convertAndSend("/topic/message", textMessageDTO);
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
-//
-//    @MessageMapping("/sendMessage")
-//    public void receiveMessage(@Payload TextMessageDTO textMessageDTO) {
-//        // receive message from client
-//    }
-//
-//
-//    @SendTo("/topic/message")
-//    public TextMessageDTO broadcastMessage(@Payload TextMessageDTO textMessageDTO) {
-//        return textMessageDTO;
-//    }
+    private final SimpMessagingTemplate template;
+    private final GameService gameService;
+
+    @PostMapping("/{roomId}/start")
+    public ResponseEntity<Void> startGame(@PathVariable UUID roomId) {
+        gameService.deleteMe(roomId);
+//        gameService.addGameThread(roomId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+    @PostMapping("/{roomId}/{roundId}/{userId}")
+    public ResponseEntity<Score> receiveUserAnswers(@PathVariable UUID roomId,
+                                                    @PathVariable UUID roundId,
+                                                    @PathVariable UUID userId,
+                                                    @RequestBody UserAnswer userAnswer) {
+
+        Score score = gameService.processUserAnswers(roomId, roundId, userId, userAnswer);
+
+        return new ResponseEntity<>(score, HttpStatus.OK);
+    }
+
 
 }
