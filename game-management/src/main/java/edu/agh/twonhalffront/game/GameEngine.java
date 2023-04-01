@@ -26,10 +26,26 @@ public class GameEngine extends Thread {
 
     @Override
     public void run() {
-        gameService.sendMessage(gameConfigurationDto.room().getRoomId(), new GameActionMessage("gameStart", null));
+        gameService.sendMessage(
+                gameConfigurationDto.room().getRoomId(),
+                new GameActionMessage(
+                "gameStart",
+                null,
+                null,
+                null
+                )
+        );
 
         for (Round round: gameConfigurationDto.room().getRounds()) {
-            gameService.sendMessage(gameConfigurationDto.room().getRoomId(), new GameActionMessage("roundStart", round.getId()));
+            gameService.sendMessage(
+                    gameConfigurationDto.room().getRoomId(),
+                    new GameActionMessage(
+                            "roundStart",
+                            round.getId(),
+                            round.getDescriptions(),
+                            round.getImages()
+                    )
+            );
             try {
                 Thread.sleep(20000);
                 i++;
@@ -37,10 +53,25 @@ public class GameEngine extends Thread {
                 throw new RuntimeException(e);
             }
 
-            gameService.sendMessage(gameConfigurationDto.room().getRoomId(), new GameActionMessage("roundEnd", round.getId()));
+            gameService.sendMessage(
+                    gameConfigurationDto.room().getRoomId(),
+                    new GameActionMessage(
+                    "roundEnd",
+                            round.getId(),
+                            null,
+                            null
+                    )
+            );
 
         }
-        gameService.sendMessage(gameConfigurationDto.room().getRoomId(), new GameActionMessage("gameEnd", null));
+        gameService.sendMessage(gameConfigurationDto.room().getRoomId(),
+                new GameActionMessage(
+                        "gameEnd",
+                        null,
+                        null,
+                        null
+                )
+        );
     }
 
     public void startNextRound() {  // TODO

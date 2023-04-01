@@ -23,4 +23,14 @@ public class Round {
             cascade = CascadeType.ALL
     )
     private List<Solution> solutions;
+    @OneToMany(
+            mappedBy = "round",
+            cascade = CascadeType.ALL
+    )
+    private List<Description> descriptions;
+    @OneToMany(
+            mappedBy = "round",
+            cascade = CascadeType.ALL
+    )
+    private List<Image> images;
 }

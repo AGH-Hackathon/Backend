@@ -62,7 +62,7 @@ public class GameService {
 
 
     public void sendMessage(UUID roomId, GameActionMessage gameActionMessage) {
-        template.convertAndSend("/game" + roomId, gameActionMessage);
+        template.convertAndSend("/game/" + roomId, gameActionMessage);
     }
 
     public Score processUserAnswers(UUID roomId, UUID roundId, UUID userId, UserAnswer userAnswer) {
