@@ -5,6 +5,8 @@ import lombok.Data;
 
 @Data
 @Builder
+@Embedable
+@NoArgsConstructor
 public class LabelImagePair {
 
     private String id;

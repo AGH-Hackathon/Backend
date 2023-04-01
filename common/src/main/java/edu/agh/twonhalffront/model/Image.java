@@ -3,8 +3,10 @@ package edu.agh.twonhalffront.model;
 import lombok.Data;
 
 @Data
+@Entity
+@NoArgsConstructor
 public class Image {
-
-    private String uuid;
+    @Id
+    private UUID uuid;
     private byte[] image;
 }

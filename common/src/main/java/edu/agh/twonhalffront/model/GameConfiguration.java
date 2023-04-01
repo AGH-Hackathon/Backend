@@ -5,8 +5,11 @@ import lombok.Data;
 
 @Data
 @Builder
+@Entity
+@NoArgsConstructor
 public class GameConfiguration {
-
     private int imageAmount;
     private int roundAmount;
+    @OneToOne
+    private Room room;
 }
