@@ -1,26 +1,27 @@
 package edu.agh.twonhalffront.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 import java.util.UUID;
 
 @Data
 @Entity
+@Builder
 @NoArgsConstructor
-public class Round {
+@AllArgsConstructor
+public class Solution {
     @Id
     private UUID id;
+    @OneToOne
+    private Description description;
+    @OneToOne
+    private Image image;
     @ManyToOne(
             cascade = {CascadeType.REMOVE, CascadeType.PERSIST}
     )
-    private Room room;
-
-    @OneToMany(
-            mappedBy = "round",
-            cascade = CascadeType.ALL
-    )
-    private List<Solution> solutions;
+    private Round round;
 }

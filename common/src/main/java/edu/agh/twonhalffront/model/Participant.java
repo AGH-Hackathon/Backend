@@ -2,16 +2,16 @@ package edu.agh.twonhalffront.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import lombok.Data;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
-@Data
 @Entity
 @NoArgsConstructor
-public class Image {
+@AllArgsConstructor
+public class Participant {
     @Id
-    private UUID uuid;
-    private String path;
+    private UUID id;
+    private String username;
 }

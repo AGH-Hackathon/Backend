@@ -1,7 +1,7 @@
 package edu.agh.twonhalffront.controller;
 
 import edu.agh.twonhalffront.model.GameConfiguration;
-import edu.agh.twonhalffront.model.LabelImagePair;
+import edu.agh.twonhalffront.model.Solution;
 import edu.agh.twonhalffront.model.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,8 +19,8 @@ public class LobbyCreatorController {
     private final LobbyCreatorService service;
 
     @PostMapping("/create")
-    public Response<List<LabelImagePair>> produceLabelsAndImages(@RequestBody GameConfiguration config) {
-        final List<LabelImagePair> result = service.generateLabelsAndImages(config);
+    public Response<List<Solution>> produceLabelsAndImages(@RequestBody GameConfiguration config) {
+        final List<Solution> result = service.generateLabelsAndImages(config);
 
         return Response.success(result);
     }
