@@ -11,11 +11,6 @@ from min_dalle import MinDalle
 import uvicorn
 from fastapi import FastAPI
 
-import os
-# from dotenv import load_dotenv
-#
-# load_dotenv()
-
 import cloudinary
 from cloudinary.uploader import upload
 
