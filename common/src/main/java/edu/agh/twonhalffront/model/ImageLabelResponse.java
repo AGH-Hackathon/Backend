@@ -6,5 +6,5 @@ import lombok.Data;
 public class ImageLabelResponse {
 
     private String label;
-    private String filename;
+    private String url;
 }

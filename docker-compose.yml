@@ -1,0 +1,12 @@
+version: '2.0'
+
+services:
+  ai-image-service:
+    image: atyranski/ai-image-service:1.0.0
+    ports:
+      - "8001:8001"
+
+  lobby-creator-service:
+    image: atyranski/lobby-creator-service:1.0.0
+    ports:
+      - "8000:8000"
