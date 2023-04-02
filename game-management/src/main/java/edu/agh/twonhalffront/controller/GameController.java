@@ -16,6 +16,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/game")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class GameController {
 
     private final SimpMessagingTemplate template;
