@@ -9,5 +9,5 @@ import java.util.UUID;
 public record GameConfigurationDto(UUID id,
                                    int imageAmount,
                                    int roundAmount,
-                                   Room room) {
+                                   RoomDto room) {
 }

@@ -1,5 +1,6 @@
 package edu.agh.twonhalffront.model;
 
+import edu.agh.twonhalffront.service.description.DescriptionDto;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,4 +24,8 @@ public class Description {
             cascade = {CascadeType.MERGE, CascadeType.PERSIST}
     )
     private Round round;
+
+    public DescriptionDto toDto() {
+        return new DescriptionDto(uuid, content);
+    }
 }

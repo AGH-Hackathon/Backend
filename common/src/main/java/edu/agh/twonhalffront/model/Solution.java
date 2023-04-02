@@ -1,5 +1,6 @@
 package edu.agh.twonhalffront.model;
 
+import edu.agh.twonhalffront.service.solution.dto.SolutionDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,4 +30,8 @@ public class Solution {
             cascade = {CascadeType.REMOVE, CascadeType.PERSIST}
     )
     private Round round;
+
+    public SolutionDto toDto() {
+        return new SolutionDto(id, description.toDto(), image.toDto());
+    }
 }

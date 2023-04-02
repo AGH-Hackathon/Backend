@@ -32,7 +32,7 @@ public class RoomService {
                 gameConfiguration.getId(),
                 gameConfiguration.getImageAmount(),
                 gameConfiguration.getRoundAmount(),
-                gameConfiguration.getRoom()
+                gameConfiguration.getRoom().toDto()
         );
     }
 }

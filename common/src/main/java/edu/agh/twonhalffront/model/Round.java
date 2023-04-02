@@ -1,5 +1,6 @@
 package edu.agh.twonhalffront.model;
 
+import edu.agh.twonhalffront.service.round.dto.RoundDto;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,4 +37,12 @@ public class Round {
             cascade = CascadeType.ALL
     )
     private List<Image> images;
+
+    public RoundDto toDto() {
+        return new RoundDto(id,
+                solutions.stream().map(Solution::toDto).toList(),
+                images.stream().map(Image::toDto).toList(),
+                descriptions.stream().map(Description::toDto).toList()
+        );
+    }
 }

@@ -5,6 +5,8 @@ import edu.agh.twonhalffront.model.Round;
 import edu.agh.twonhalffront.model.Solution;
 import edu.agh.twonhalffront.service.GameService;
 import edu.agh.twonhalffront.service.room.GameConfigurationDto;
+import edu.agh.twonhalffront.service.round.dto.RoundDto;
+import edu.agh.twonhalffront.service.solution.dto.SolutionDto;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -26,7 +28,7 @@ public class GameEngine extends Thread {
     @Override
     public void run() {
         gameService.sendMessage(
-                gameConfigurationDto.room().getRoomId(),
+                gameConfigurationDto.room().id(),
                 new GameActionMessage(
                 "gameStart",
                 null,
@@ -36,14 +38,14 @@ public class GameEngine extends Thread {
                 )
         );
 
-        for (Round round: gameConfigurationDto.room().getRounds()) {
+        for (RoundDto round: gameConfigurationDto.room().roundDtos()) {
             gameService.sendMessage(
-                    gameConfigurationDto.room().getRoomId(),
+                    gameConfigurationDto.room().id(),
                     new GameActionMessage(
                             "roundStart",
-                            round.getId(),
-                            round.getDescriptions(),
-                            round.getImages(),
+                            round.id(),
+                            round.descriptionDtos(),
+                            round.imageDtos(),
                             getScoreBoard()
                     )
             );
@@ -55,10 +57,10 @@ public class GameEngine extends Thread {
             }
 
             gameService.sendMessage(
-                    gameConfigurationDto.room().getRoomId(),
+                    gameConfigurationDto.room().id(),
                     new GameActionMessage(
                     "roundEnd",
-                            round.getId(),
+                            round.id(),
                             null,
                             null,
                             getScoreBoard()
@@ -66,7 +68,7 @@ public class GameEngine extends Thread {
             );
 
         }
-        gameService.sendMessage(gameConfigurationDto.room().getRoomId(),
+        gameService.sendMessage(gameConfigurationDto.room().id(),
                 new GameActionMessage(
                         "gameEnd",
                         null,
@@ -79,7 +81,7 @@ public class GameEngine extends Thread {
 
     public void addParticipantToGame(ParticipantDto participant) {
         participants.put(participant.id(), participant);
-        gameService.sendMessage(gameConfigurationDto.room().getRoomId(), new GameActionMessage(
+        gameService.sendMessage(gameConfigurationDto.room().id(), new GameActionMessage(
                 "userConnect",
                 null,
                 null,
@@ -97,14 +99,14 @@ public class GameEngine extends Thread {
     }
 
     public Score processUserAnswers(UserAnswer userAnswer, UUID userId) {
-        Round round = gameConfigurationDto.room().getRounds().get(currentRoomIndex);
-        List<Solution> solutions = round.getSolutions();
+        RoundDto round = gameConfigurationDto.room().roundDtos().get(currentRoomIndex);
+        List<SolutionDto> solutions = round.solutionDtos();
 
         int correct = 0;
         for (ImageDescriptionMatch imageDescriptionMatch: userAnswer.answers) {
-            for (Solution solution: solutions) {
-                if (imageDescriptionMatch.descriptionId.equals(solution.getDescription().getUuid())
-                        && imageDescriptionMatch.ImageId.equals(solution.getImage().getUuid())) {
+            for (SolutionDto solution: solutions) {
+                if (imageDescriptionMatch.descriptionId.equals(solution.description().uuid())
+                        && imageDescriptionMatch.ImageId.equals(solution.image().uuid())) {
                     correct++;
                 }
             }
