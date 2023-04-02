@@ -25,6 +25,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -42,7 +43,6 @@ public class LobbyCreatorService {
 
     @Transactional
     public UUID generateLabelsAndImages(GameConfiguration config) {
-        System.out.println(config);
         final int pairAmount = config.getImageAmount() * config.getRoundAmount();
         final List<ImageLabelResponse> imageLabelList = generateImagesAndLabels(pairAmount);
         final List<Image> images = saveImages(imageLabelList);
@@ -63,6 +63,26 @@ public class LobbyCreatorService {
         roomRepository.save(room);
 
         return roomId;
+    }
+
+    @Transactional
+    public UUID restartGameRoom(UUID roomId) {
+        Optional<Room> optionalRoom = roomRepository.findById(roomId);
+        if (optionalRoom.isEmpty())
+            return roomId;
+
+        Room room = optionalRoom.get();
+        GameConfiguration config = room.getGameConfiguration();
+
+        final int pairAmount = config.getImageAmount() * config.getRoundAmount();
+        final List<ImageLabelResponse> imageLabelList = generateImagesAndLabels(pairAmount);
+        final List<Image> images = saveImages(imageLabelList);
+        final List<Description> descriptions = saveDescriptions(imageLabelList);
+
+        final List<Round> rounds = saveRounds(images, descriptions, config, room);
+        room.setRounds(rounds);
+
+        return roomRepository.save(room).getRoomId();
     }
 
     private List<Image> saveImages(List<ImageLabelResponse> imageLabelList) {
