@@ -4,7 +4,6 @@ import edu.agh.twonhalffront.dto.NewUserRequest;
 import edu.agh.twonhalffront.dto.ParticipantDto;
 import edu.agh.twonhalffront.dto.Score;
 import edu.agh.twonhalffront.dto.UserAnswer;
-import edu.agh.twonhalffront.game.GameEngine;
 import edu.agh.twonhalffront.service.GameService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,8 +23,8 @@ public class GameController {
 
     @PostMapping("/{roomId}/start")
     public ResponseEntity<Void> startGame(@PathVariable UUID roomId) {
-//        gameService.deleteMe(roomId);
-        gameService.addGameThread(roomId);
+
+        gameService.startGame(roomId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
