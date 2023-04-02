@@ -40,7 +40,7 @@ public class GameEngine extends Thread {
         );
 
         for (RoundDto round: gameConfigurationDto.room().roundDtos()) {
-            List<DescriptionDto> arr = round.descriptionDtos();
+            ArrayList<DescriptionDto> arr = new ArrayList<>(round.descriptionDtos());
             Collections.shuffle(arr);
             gameService.sendMessage(
                     gameConfigurationDto.room().id(),
