@@ -6,10 +6,10 @@ services:
 #    ports:
 #      - "8001:8001"
 #
-#  lobby-creator-service:
-#    image: atyranski/lobby-creator-service:1.0.0
-#    ports:
-#      - "8000:8000"
+  lobby-creator-service:
+    image: atyranski/lobby-creator-service:1.0.0
+    ports:
+      - "8000:8000"
 
   postgres:
     image: postgres
