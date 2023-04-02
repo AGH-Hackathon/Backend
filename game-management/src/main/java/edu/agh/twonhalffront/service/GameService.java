@@ -8,6 +8,7 @@ import edu.agh.twonhalffront.service.room.RoundRepository;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -50,9 +51,9 @@ public class GameService {
         template.convertAndSend("/game/" + roomId, gameActionMessage);
     }
 
-    public Score processUserAnswers(UUID roomId, UUID roundId, UUID userId, UserAnswer userAnswer) {
+    public Score processUserAnswers(UUID roomId, UUID roundId, UUID userId, List<ImageDescriptionMatch> answers) {
         GameEngine gameThread = gameThreadMap.get(roomId);
-        return gameThread.processUserAnswers(userAnswer, userId);
+        return gameThread.processUserAnswers(answers, userId);
     }
 
     public ParticipantDto addUserToGame(UUID roomId, NewUserRequest newUserRequest) {

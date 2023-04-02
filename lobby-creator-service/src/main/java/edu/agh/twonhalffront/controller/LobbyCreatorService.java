@@ -60,7 +60,7 @@ public class LobbyCreatorService {
         gameConfigurationRepository.save(config);
         room.setGameConfiguration(config);
 
-        roomRepository.save(room);
+//        roomRepository.save(room);
 
         return roomId;
     }
@@ -96,7 +96,6 @@ public class LobbyCreatorService {
 
                 description.setRound(round);
                 image.setRound(round);
-                System.out.println(index);
                 imageRepository.save(image);
                 descriptionRepository.save(description);
 
@@ -112,7 +111,7 @@ public class LobbyCreatorService {
             round.setDescriptions(descriptions);
             round.setRoom(room);
             rounds.add(round);
-            roundRepository.save(round);
+//            roundRepository.save(round);
         }
 
         return rounds;

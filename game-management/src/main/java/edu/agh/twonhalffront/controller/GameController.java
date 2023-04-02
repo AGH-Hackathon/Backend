@@ -1,16 +1,22 @@
 package edu.agh.twonhalffront.controller;
 
+import edu.agh.twonhalffront.dto.ImageDescriptionMatch;
 import edu.agh.twonhalffront.dto.NewUserRequest;
 import edu.agh.twonhalffront.dto.ParticipantDto;
 import edu.agh.twonhalffront.dto.Score;
-import edu.agh.twonhalffront.dto.UserAnswer;
 import edu.agh.twonhalffront.service.GameService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -41,9 +47,9 @@ public class GameController {
     public ResponseEntity<Score> receiveUserAnswers(@PathVariable UUID roomId,
                                                     @PathVariable UUID roundId,
                                                     @PathVariable UUID userId,
-                                                    @RequestBody UserAnswer userAnswer) {
+                                                    @RequestBody List<ImageDescriptionMatch> answers) {
 
-        Score score = gameService.processUserAnswers(roomId, roundId, userId, userAnswer);
+        Score score = gameService.processUserAnswers(roomId, roundId, userId, answers);
 
         return new ResponseEntity<>(score, HttpStatus.OK);
     }

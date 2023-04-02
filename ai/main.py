@@ -41,9 +41,16 @@ def generate_and_parse_labels(num_of_images_and_labels: int) -> List[str]:
     #     ]
     # )
     # return [desc for desc in completion.choices[0].message.content.splitlines() if desc]
+    # return [
+    #     "A giant octopus playing a ukulele and singing a happy tune while floating on a bed of clouds.",
+    #     "A giant friendly worm with a big smile, wearing a bowler hat and carrying a briefcase, walking on its hind legs through a busy city street."
+    # ]
+
     return [
-        "A dog playing the piano.",
-        "A cat riding a bike."
+        "donald trump",
+        "pink cat eating banana",
+        "electric snails glow fluorescent",
+        "robo octopus dances tango"
     ]
 
 
