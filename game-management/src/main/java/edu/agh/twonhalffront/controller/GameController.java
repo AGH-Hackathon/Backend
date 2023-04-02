@@ -49,4 +49,9 @@ public class GameController {
     }
 
 
+    @PostMapping("/{roomId}/reload")
+    public void reloadGameConfig(@PathVariable UUID roomId) {
+        gameService.reloadGameConfig(roomId);
+    }
+
 }

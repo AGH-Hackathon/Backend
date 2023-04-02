@@ -3,8 +3,10 @@ package edu.agh.twonhalffront.service;
 import edu.agh.twonhalffront.dto.*;
 import edu.agh.twonhalffront.game.GameEngine;
 import edu.agh.twonhalffront.service.room.GameConfigurationDto;
+import edu.agh.twonhalffront.service.room.RoomRepository;
 import edu.agh.twonhalffront.service.room.RoomService;
 import edu.agh.twonhalffront.service.room.RoundRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
@@ -17,14 +19,16 @@ public class GameService {
 
     private final SimpMessagingTemplate template;
     private final RoundRepository roundRepository;
+    private final RoomRepository roomRepository;
     private final RoomService roomService;
     private final Map<UUID, GameEngine> gameThreadMap = new ConcurrentHashMap<>();
 
     public GameService(SimpMessagingTemplate template,
                        RoundRepository roundRepository,
-                       RoomService roomService) {
+                       RoomRepository roomRepository, RoomService roomService) {
         this.template = template;
         this.roundRepository = roundRepository;
+        this.roomRepository = roomRepository;
         this.roomService = roomService;
     }
 
@@ -60,5 +64,11 @@ public class GameService {
         ParticipantDto newParticipant = new ParticipantDto(UUID.randomUUID(), newUserRequest.username(), new Score(0,0));
         gameThread.addParticipantToGame(newParticipant);
         return newParticipant;
+    }
+
+    @Transactional
+    public void reloadGameConfig(UUID roomId) {
+        GameConfigurationDto gameConfigurationDto = roomService.getGameConfiguration(roomId);
+        findOrCreate(roomId).setGameConfiguration(gameConfigurationDto);
     }
 }

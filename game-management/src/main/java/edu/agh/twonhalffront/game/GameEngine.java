@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class GameEngine extends Thread {
 
-    private final GameConfigurationDto gameConfigurationDto;
+    private GameConfigurationDto gameConfigurationDto;
     private int currentRoomIndex = 0;
     private final GameService gameService;
 
@@ -116,5 +116,9 @@ public class GameEngine extends Thread {
         participants.put(userId, new ParticipantDto(old.id(), old.username(), new Score(old.score().correct() + correct, old.score().total() + solutions.size())));
 
         return new Score(correct, solutions.size());
+    }
+
+    public void setGameConfiguration(GameConfigurationDto gameConfigurationDto) {
+        this.gameConfigurationDto = gameConfigurationDto;
     }
 }
