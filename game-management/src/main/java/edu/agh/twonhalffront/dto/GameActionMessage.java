@@ -5,6 +5,7 @@ import edu.agh.twonhalffront.model.Image;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 
@@ -12,6 +13,7 @@ public record GameActionMessage(
         String action,
         UUID roundId,
         List<Description> descriptions,
-        List<Image> images
+        List<Image> images,
+        Map<String, ParticipantDto> scoreboard
 ) {
 }

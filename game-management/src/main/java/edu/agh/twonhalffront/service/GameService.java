@@ -1,9 +1,6 @@
 package edu.agh.twonhalffront.service;
 
-import edu.agh.twonhalffront.dto.GameActionMessage;
-import edu.agh.twonhalffront.dto.ImageDescriptionMatch;
-import edu.agh.twonhalffront.dto.Score;
-import edu.agh.twonhalffront.dto.UserAnswer;
+import edu.agh.twonhalffront.dto.*;
 import edu.agh.twonhalffront.game.GameEngine;
 import edu.agh.twonhalffront.model.GameConfiguration;
 import edu.agh.twonhalffront.model.Room;
@@ -66,7 +63,14 @@ public class GameService {
     }
 
     public Score processUserAnswers(UUID roomId, UUID roundId, UUID userId, UserAnswer userAnswer) {
-        GameEngine gameThread = gameThreadMap.get(roomId);  // TODO
-        return gameThread.processUserAnswers(userAnswer);
+        GameEngine gameThread = gameThreadMap.get(roomId);
+        return gameThread.processUserAnswers(userAnswer, userId);
+    }
+
+    public ParticipantDto addUserToGame(UUID roomId, NewUserRequest newUserRequest) {
+        GameEngine gameThread = gameThreadMap.get(roomId);
+        ParticipantDto newParticipant = new ParticipantDto(UUID.randomUUID(), newUserRequest.username(), new Score(0,0));
+        gameThread.addParticipantToGame(newParticipant);
+        return newParticipant;
     }
 }

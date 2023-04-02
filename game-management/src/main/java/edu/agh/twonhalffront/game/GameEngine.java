@@ -1,22 +1,24 @@
 package edu.agh.twonhalffront.game;
 
-import edu.agh.twonhalffront.dto.GameActionMessage;
-import edu.agh.twonhalffront.dto.ImageDescriptionMatch;
-import edu.agh.twonhalffront.dto.Score;
-import edu.agh.twonhalffront.dto.UserAnswer;
+import edu.agh.twonhalffront.dto.*;
+import edu.agh.twonhalffront.model.Participant;
 import edu.agh.twonhalffront.model.Round;
 import edu.agh.twonhalffront.model.Solution;
 import edu.agh.twonhalffront.service.GameService;
 import edu.agh.twonhalffront.service.room.GameConfigurationDto;
 import lombok.AllArgsConstructor;
 
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class GameEngine extends Thread {
 
     private final GameConfigurationDto gameConfigurationDto;
     private int i = 0;
     private final GameService gameService;
+
+    private final Map<UUID, ParticipantDto> participants = new ConcurrentHashMap<>();
 
     public GameEngine(GameConfigurationDto gameConfigurationDto, GameService gameService) {
         this.gameConfigurationDto = gameConfigurationDto;
@@ -32,7 +34,8 @@ public class GameEngine extends Thread {
                 "gameStart",
                 null,
                 null,
-                null
+                null,
+                        getScoreBoard()
                 )
         );
 
@@ -43,7 +46,8 @@ public class GameEngine extends Thread {
                             "roundStart",
                             round.getId(),
                             round.getDescriptions(),
-                            round.getImages()
+                            round.getImages(),
+                            getScoreBoard()
                     )
             );
             try {
@@ -59,7 +63,8 @@ public class GameEngine extends Thread {
                     "roundEnd",
                             round.getId(),
                             null,
-                            null
+                            null,
+                            getScoreBoard()
                     )
             );
 
@@ -69,16 +74,32 @@ public class GameEngine extends Thread {
                         "gameEnd",
                         null,
                         null,
-                        null
+                        null,
+                        getScoreBoard()
                 )
         );
     }
 
-    public void startNextRound() {  // TODO
-
+    public void addParticipantToGame(ParticipantDto participant) {
+        participants.put(participant.id(), participant);
+        gameService.sendMessage(gameConfigurationDto.room().getRoomId(), new GameActionMessage(
+                "userConnect",
+                null,
+                null,
+                null,
+                getScoreBoard()
+        ));
     }
 
-    public Score processUserAnswers(UserAnswer userAnswer) {
+    private Map<String, ParticipantDto> getScoreBoard() {
+        Map<String, ParticipantDto> scoreboard = new HashMap<>();
+        for (ParticipantDto participantDto: participants.values()) {
+            scoreboard.put(participantDto.username(), participantDto);
+        }
+        return scoreboard;
+    }
+
+    public Score processUserAnswers(UserAnswer userAnswer, UUID userId) {
         Round round = gameConfigurationDto.room().getRounds().get(i);
         List<Solution> solutions = round.getSolutions();
 
@@ -91,6 +112,10 @@ public class GameEngine extends Thread {
                 }
             }
         }
+        ParticipantDto old = participants.get(userId);
+
+        participants.put(userId, new ParticipantDto(old.id(), old.username(), new Score(old.score().correct() + correct, old.score().total() + solutions.size())));
+
         return new Score(correct, solutions.size());
     }
 }
