@@ -1,21 +1,18 @@
 package edu.agh.twonhalffront.game;
 
 import edu.agh.twonhalffront.dto.*;
-import edu.agh.twonhalffront.model.Participant;
 import edu.agh.twonhalffront.model.Round;
 import edu.agh.twonhalffront.model.Solution;
 import edu.agh.twonhalffront.service.GameService;
 import edu.agh.twonhalffront.service.room.GameConfigurationDto;
-import lombok.AllArgsConstructor;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class GameEngine extends Thread {
 
     private final GameConfigurationDto gameConfigurationDto;
-    private int i = 0;
+    private int currentRoomIndex = 0;
     private final GameService gameService;
 
     private final Map<UUID, ParticipantDto> participants = new ConcurrentHashMap<>();
@@ -52,7 +49,7 @@ public class GameEngine extends Thread {
             );
             try {
                 Thread.sleep(20000);
-                i++;
+                currentRoomIndex++;
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -100,7 +97,7 @@ public class GameEngine extends Thread {
     }
 
     public Score processUserAnswers(UserAnswer userAnswer, UUID userId) {
-        Round round = gameConfigurationDto.room().getRounds().get(i);
+        Round round = gameConfigurationDto.room().getRounds().get(currentRoomIndex);
         List<Solution> solutions = round.getSolutions();
 
         int correct = 0;
