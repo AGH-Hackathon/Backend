@@ -24,8 +24,8 @@ public class GameController {
 
     @PostMapping("/{roomId}/start")
     public ResponseEntity<Void> startGame(@PathVariable UUID roomId) {
-        gameService.deleteMe(roomId);
-//        gameService.addGameThread(roomId);
+//        gameService.deleteMe(roomId);
+        gameService.addGameThread(roomId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

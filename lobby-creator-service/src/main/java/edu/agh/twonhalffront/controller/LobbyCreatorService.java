@@ -94,6 +94,9 @@ public class LobbyCreatorService {
 
                 description.setRound(round);
                 image.setRound(round);
+                System.out.println(index);
+                imageRepository.save(image);
+                descriptionRepository.save(description);
 
                 Solution solution = new Solution();
                 solution.setRound(round);

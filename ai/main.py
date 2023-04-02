@@ -69,7 +69,7 @@ def upload_image(image: Image) -> str:
 def generate_and_upload_images(labels: List[str], device: str) -> List[Dict[str, str]]:
     model: MinDalle = MinDalle(
         models_root="./pretrained",
-        dtype=torch.float16,
+        dtype=torch.float32,
         device=device,
         is_mega=False,
         is_reusable=True

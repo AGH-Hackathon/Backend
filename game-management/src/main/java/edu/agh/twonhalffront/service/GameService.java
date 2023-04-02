@@ -33,14 +33,23 @@ public class GameService {
         this.roomService = roomService;
     }
 
-    public void addGameThread(UUID roomID) {
-        GameConfigurationDto gameConfigurationDto = roomService.getGameConfiguration(roomID);
+    public GameEngine findOrCreate(UUID roomId) {
+        if (gameThreadMap.containsKey(roomId)) {
+            System.out.println("NO KURWA JEST");
+            return gameThreadMap.get(roomId);
+        }
+        GameConfigurationDto gameConfigurationDto = roomService.getGameConfiguration(roomId);
         GameEngine gameThread = new GameEngine(
                 gameConfigurationDto,
                 this
         );
+        System.out.println("NO KURWA NIE BYLo");
+        gameThreadMap.put(roomId, gameThread);
+        return gameThread;
+    }
 
-        gameThreadMap.put(roomID, gameThread);
+    public void addGameThread(UUID roomID) {
+        GameEngine gameThread = findOrCreate(roomID);
         gameThread.start();
     }
 
@@ -68,7 +77,9 @@ public class GameService {
     }
 
     public ParticipantDto addUserToGame(UUID roomId, NewUserRequest newUserRequest) {
-        GameEngine gameThread = gameThreadMap.get(roomId);
+        GameEngine gameThread = findOrCreate(roomId);
+        System.out.println(gameThread);
+        System.out.println(gameThreadMap.keySet());
         ParticipantDto newParticipant = new ParticipantDto(UUID.randomUUID(), newUserRequest.username(), new Score(0,0));
         gameThread.addParticipantToGame(newParticipant);
         return newParticipant;
