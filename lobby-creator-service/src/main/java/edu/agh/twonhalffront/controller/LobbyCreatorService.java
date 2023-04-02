@@ -84,6 +84,8 @@ public class LobbyCreatorService {
 
         for (int roundNumber = 0; roundNumber < config.getRoundAmount(); roundNumber++) {
             Round round = new Round();
+            UUID roundId = roundRepository.save(round).getId();
+            round.setId(roundId);
             List<Solution> solutions = new LinkedList<>();
 
             for (int imageNumber = 0; imageNumber < config.getImageAmount(); imageNumber++) {
