@@ -22,17 +22,20 @@ public class Round {
 
     @OneToMany(
             mappedBy = "round",
-            cascade = CascadeType.ALL
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER
     )
     private List<Solution> solutions;
     @OneToMany(
             mappedBy = "round",
-            cascade = CascadeType.ALL
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER
     )
     private List<Description> descriptions;
     @OneToMany(
             mappedBy = "round",
-            cascade = CascadeType.ALL
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER
     )
     private List<Image> images;
 }

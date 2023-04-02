@@ -20,7 +20,8 @@ public class Room {
     private String hostId;
     @OneToMany(
             mappedBy = "room",
-            cascade = CascadeType.ALL
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER
     )
     private List<Round> rounds;
     @OneToOne
