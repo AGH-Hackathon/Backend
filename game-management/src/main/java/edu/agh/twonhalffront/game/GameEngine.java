@@ -4,6 +4,7 @@ import edu.agh.twonhalffront.dto.*;
 import edu.agh.twonhalffront.model.Round;
 import edu.agh.twonhalffront.model.Solution;
 import edu.agh.twonhalffront.service.GameService;
+import edu.agh.twonhalffront.service.description.DescriptionDto;
 import edu.agh.twonhalffront.service.room.GameConfigurationDto;
 import edu.agh.twonhalffront.service.round.dto.RoundDto;
 import edu.agh.twonhalffront.service.solution.dto.SolutionDto;
@@ -39,19 +40,21 @@ public class GameEngine extends Thread {
         );
 
         for (RoundDto round: gameConfigurationDto.room().roundDtos()) {
+            List<DescriptionDto> arr = round.descriptionDtos();
+            Collections.shuffle(arr);
             gameService.sendMessage(
                     gameConfigurationDto.room().id(),
                     new GameActionMessage(
                             "roundStart",
                             round.id(),
-                            round.descriptionDtos(),
+                            arr,
                             round.imageDtos(),
                             getScoreBoard()
                     )
             );
             try {
-                Thread.sleep(20000);
-                currentRoomIndex++;
+                Thread.sleep(21000);
+                currentRoomIndex = Math.min(currentRoomIndex + 1, gameConfigurationDto.room().roundDtos().size() - 1);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -98,12 +101,13 @@ public class GameEngine extends Thread {
         return scoreboard;
     }
 
-    public Score processUserAnswers(UserAnswer userAnswer, UUID userId) {
+    public Score processUserAnswers(List<ImageDescriptionMatch> answers, UUID userId) {
         RoundDto round = gameConfigurationDto.room().roundDtos().get(currentRoomIndex);
         List<SolutionDto> solutions = round.solutionDtos();
 
         int correct = 0;
-        for (ImageDescriptionMatch imageDescriptionMatch: userAnswer.answers) {
+        System.out.println(answers);
+        for (ImageDescriptionMatch imageDescriptionMatch: answers) {
             for (SolutionDto solution: solutions) {
                 if (imageDescriptionMatch.descriptionId.equals(solution.description().uuid())
                         && imageDescriptionMatch.ImageId.equals(solution.image().uuid())) {

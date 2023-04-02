@@ -48,7 +48,9 @@ def generate_and_parse_labels(num_of_images_and_labels: int) -> List[str]:
 
     return [
         "donald trump",
-        "pink cat eating banana"
+        "pink cat eating banana",
+        "electric snails glow fluorescent",
+        "robo octopus dances tango"
     ]
 
 
