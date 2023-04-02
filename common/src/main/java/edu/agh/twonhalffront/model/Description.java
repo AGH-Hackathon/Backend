@@ -2,6 +2,8 @@ package edu.agh.twonhalffront.model;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
@@ -14,6 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Description {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID uuid;
     private String content;
     @ManyToOne(

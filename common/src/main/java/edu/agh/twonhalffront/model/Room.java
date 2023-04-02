@@ -14,7 +14,9 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Room {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID roomId;
+
     private String hostId;
     @OneToMany(
             mappedBy = "room",

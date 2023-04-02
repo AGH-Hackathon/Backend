@@ -14,12 +14,17 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Solution {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
     @OneToOne
     private Description description;
+
     @OneToOne
     private Image image;
+
     @ManyToOne(
             cascade = {CascadeType.REMOVE, CascadeType.PERSIST}
     )
