@@ -16,7 +16,8 @@ public class Round {
     private UUID id;
 
     @ManyToOne(
-            cascade = {CascadeType.REMOVE, CascadeType.PERSIST}
+            cascade = {CascadeType.REMOVE, CascadeType.PERSIST},
+            fetch = FetchType.LAZY
     )
     private Room room;
 
