@@ -1,5 +1,6 @@
 package edu.agh.twonhalffront.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,8 +20,10 @@ public class GameConfiguration {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
+    @JsonProperty("image_amount")
     private int imageAmount;
 
+    @JsonProperty("round_amount")
     private int roundAmount;
 
     @OneToOne

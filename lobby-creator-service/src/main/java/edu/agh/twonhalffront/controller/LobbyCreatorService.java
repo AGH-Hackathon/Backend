@@ -12,7 +12,11 @@ import edu.agh.twonhalffront.model.Round;
 import edu.agh.twonhalffront.model.Solution;
 import edu.agh.twonhalffront.service.description.DescriptionRepository;
 import edu.agh.twonhalffront.service.image.ImageRepository;
+import edu.agh.twonhalffront.service.room.GameConfigurationRepository;
 import edu.agh.twonhalffront.service.room.RoomRepository;
+import edu.agh.twonhalffront.service.room.RoundRepository;
+import edu.agh.twonhalffront.service.solution.SolutionRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -32,18 +36,33 @@ public class LobbyCreatorService {
     private final ImageRepository imageRepository;
     private final DescriptionRepository descriptionRepository;
     private final RoomRepository roomRepository;
+    private final RoundRepository roundRepository;
+    private final GameConfigurationRepository gameConfigurationRepository;
+    private final SolutionRepository solutionRepository;
 
+    @Transactional
     public UUID generateLabelsAndImages(GameConfiguration config) {
+        System.out.println(config);
         final int pairAmount = config.getImageAmount() * config.getRoundAmount();
         final List<ImageLabelResponse> imageLabelList = generateImagesAndLabels(pairAmount);
         final List<Image> images = saveImages(imageLabelList);
         final List<Description> descriptions = saveDescriptions(imageLabelList);
-        final List<Round> rounds = saveRounds(images, descriptions, config);
 
         final Room room = new Room();
+        UUID roomId = roomRepository.save(room).getRoomId();
+        room.setRoomId(roomId);
+
+        final List<Round> rounds = saveRounds(images, descriptions, config, room);
         room.setRounds(rounds);
 
-        return roomRepository.save(room).getRoomId();
+        config.setRoom(room);
+
+        gameConfigurationRepository.save(config);
+        room.setGameConfiguration(config);
+
+        roomRepository.save(room);
+
+        return roomId;
     }
 
     private List<Image> saveImages(List<ImageLabelResponse> imageLabelList) {
@@ -60,7 +79,7 @@ public class LobbyCreatorService {
         return images;
     }
 
-    private List<Round> saveRounds(List<Image> images, List<Description> descriptions, GameConfiguration config) {
+    private List<Round> saveRounds(List<Image> images, List<Description> descriptions, GameConfiguration config, Room room) {
         final List<Round> rounds = new LinkedList<>();
 
         for (int roundNumber = 0; roundNumber < config.getRoundAmount(); roundNumber++) {
@@ -73,13 +92,22 @@ public class LobbyCreatorService {
                 Image image = images.get(index);
                 Description description = descriptions.get(index);
 
+                description.setRound(round);
+                image.setRound(round);
+
                 Solution solution = new Solution();
+                solution.setRound(round);
                 solution.setImage(image);
                 solution.setDescription(description);
                 solutions.add(solution);
+                solutionRepository.save(solution);
             }
             round.setSolutions(solutions);
+            round.setImages(images);
+            round.setDescriptions(descriptions);
+            round.setRoom(room);
             rounds.add(round);
+            roundRepository.save(round);
         }
 
         return rounds;

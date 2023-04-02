@@ -12,9 +12,9 @@ import uvicorn
 from fastapi import FastAPI
 
 import os
-from dotenv import load_dotenv
-
-load_dotenv()
+# from dotenv import load_dotenv
+#
+# load_dotenv()
 
 import cloudinary
 from cloudinary.uploader import upload
@@ -23,9 +23,12 @@ from cloudinary.uploader import upload
 # openai.api_key = ""
 
 # TODO: add your cloud name and API keys to use Cloudinary
-CLOUDINARY_CLOUD_NAME = os.getenv('CLOUDINARY_CLOUD_NAME')
-CLOUDINARY_API_KEY = os.getenv('CLOUDINARY_API_KEY')
-CLOUDINARY_API_SECRET = os.getenv('CLOUDINARY_API_SECRET')
+# CLOUDINARY_CLOUD_NAME = os.getenv('CLOUDINARY_CLOUD_NAME')
+# CLOUDINARY_API_KEY = os.getenv('CLOUDINARY_API_KEY')
+# CLOUDINARY_API_SECRET = os.getenv('CLOUDINARY_API_SECRET')
+CLOUDINARY_CLOUD_NAME="dcbnhbnvk"
+CLOUDINARY_API_KEY="899829585613519"
+CLOUDINARY_API_SECRET="jAv1FNfRJmgQ8PU4rcEwyWo4HjU"
 
 cloudinary.config(
     cloud_name=CLOUDINARY_CLOUD_NAME,
