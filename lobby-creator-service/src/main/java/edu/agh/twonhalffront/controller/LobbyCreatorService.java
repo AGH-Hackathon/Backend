@@ -51,7 +51,7 @@ public class LobbyCreatorService {
 
         for (ImageLabelResponse imageLabelPair: imageLabelList) {
             Image image = new Image();
-            image.setPath(imageLabelPair.getFilename());
+            image.setUrl(imageLabelPair.getUrl());
 
             imageRepository.save(image);
             images.add(image);

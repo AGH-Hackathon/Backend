@@ -18,7 +18,7 @@ public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID uuid;
-    private String path;
+    private String url;
     @ManyToOne(
             cascade = {CascadeType.MERGE, CascadeType.PERSIST}
     )
