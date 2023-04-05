@@ -1,0 +1,9 @@
+application {
+    mainClass = 'edu.agh.twonhalffront.GameApplication'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': application.mainClass
+    }
+}
